@@ -12,9 +12,7 @@ pub struct Node {
 }
 
 impl Node {
-
     pub fn new(file_path: &str) -> Self {
-        
         let hashed = Self::hash_file(file_path); 
         let ts = Local::now().to_string();   
 
@@ -49,6 +47,15 @@ impl Node {
             "Hash".green(), hash, 
             "Timestamp".yellow(), ts
         );
+        if let Some(ref next_node) = self.next {
+            next_node.print_node();
+        }
     }
+}
 
+pub fn append_node(mut node: &mut Node, new_node: Node) {
+    while let Some(ref mut next_node) = node.next {
+        node = next_node;
+    }
+    node.next = Some(Box::new(new_node));
 }
