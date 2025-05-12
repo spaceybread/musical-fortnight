@@ -1,9 +1,8 @@
 use std::fs::read_to_string;
-use std::io::{self, Read};
-use std::fs::File;
+use std::io;
 
-pub fn diff(file_one: &str, file_two: &str) -> io::Result<()> {
-    let mut changes: Vec<(i32, i32, char, char)> = Vec::new();
+pub fn diff(file_one: &str, file_two: &str) -> io::Result<(Vec<(String, String, i32, i32)>)> {
+    let mut changes: Vec<(String, String, i32, i32)> = Vec::new();
 
     let text1 = read_to_string(file_one)?;
     let text2 = read_to_string(file_two)?;
@@ -20,11 +19,13 @@ pub fn diff(file_one: &str, file_two: &str) -> io::Result<()> {
         while i < lcs_i {
             // deletion
             println!("- {} : {} {}", words1[i], i, j);
+            changes.push(("-".to_string(), words1[i].to_string(), i as i32, j as i32));
             i += 1;
         }
         while j < lcs_j {
             // insertion
             println!("+ {} : {} {}", words2[j], i, j);
+            changes.push(("+".to_string(), words2[j].to_string(), i as i32, j as i32));
             j += 1;
         }
         i += 1;
@@ -33,15 +34,18 @@ pub fn diff(file_one: &str, file_two: &str) -> io::Result<()> {
 
     // remaining words
     while i < words1.len() {
-        println!("- {} : {} {}", words1[i], "END", j);
+        println!("- {} : {} {}", words1[i], -1, j);
+        changes.push(("-".to_string(), words1[i].to_string(), i as i32, j as i32));
         i += 1;
+        
     }
     while j < words2.len() {
-        println!("+ {} : {} {}", words2[j], i, "END");
+        println!("+ {} : {} {}", words2[j], i, -1);
+        changes.push(("+".to_string(), words2[j].to_string(), i as i32, j as i32));
         j += 1;
     }
 
-    Ok(())
+    Ok((changes))
 }
 
 fn compute_lcs(a: &[&str], b: &[&str]) -> Vec<(usize, usize)> {

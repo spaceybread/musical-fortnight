@@ -7,5 +7,5 @@ fn main() {
     // graph_stuff::append_node(&mut node, node2); 
     // node.print_node(); 
 
-    diff::diff("/Users/home/Documents/musical-fortnight/testing/cow1.txt", "/Users/home/Documents/musical-fortnight/testing/cow2.txt"); 
+    let _ = diff::diff("/Users/home/Documents/musical-fortnight/testing/first.txt", "/Users/home/Documents/musical-fortnight/testing/first_alt.txt"); 
 }
