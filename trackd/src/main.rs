@@ -1,3 +1,6 @@
+mod graph_stuff;
+
 fn main() {
-    println!("Hello, world!");
+    let node = graph_stuff::Node::new("/Users/home/Documents/musical-fortnight/testing/first.txt"); 
+    node.print_node(); 
 }
