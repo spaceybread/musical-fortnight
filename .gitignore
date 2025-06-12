@@ -1,2 +1,4 @@
 trackd/target
 trackd/Cargo.lock
+editor/target
+editor/Cargo.lock
